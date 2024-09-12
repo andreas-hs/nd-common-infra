@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    networks:
+      - new-dealigence
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - new-dealigence
+
+volumes:
+  mysql_data:
+
+networks:
+  new-dealigence:
+    external: true
